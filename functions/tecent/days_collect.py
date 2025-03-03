@@ -1,7 +1,9 @@
 import datetime
 
 import const.const as const
+import csvs.csv_tool as dict_to_csv
 import functions.tecent.history_un_collect as history_un_collect
+import functions.tecent.stocks as stockapp
 import jsons.jsontool as jsontool
 from functions.tecent.day import Day
 from functions.tecent.stock import Stock
@@ -23,8 +25,6 @@ def day_collect_json_filename(stock):
     _name = stock.read_name()
     _type = stock.read_type()
     return f'{const.TENCENT_DAYS_COLLECT}/{_type}{_code}.json'
-
-
 
 
 def deal_day_to_dict(stock, _year):
@@ -70,7 +70,6 @@ def _add_to_dict(day):
 
 
 def _read_item_to_day(_day_item):
-    print(_day_item)
     _date = _day_item[0]
     _open_price = _day_item[1]
     _high = _day_item[3]
@@ -78,7 +77,6 @@ def _read_item_to_day(_day_item):
     _close = _day_item[2]
     _vol = _day_item[5]
     _dayBean = Day(_date, _open_price, _high, _low, _close, _vol)
-    print(_dayBean)
     return _dayBean
 
 
@@ -87,6 +85,7 @@ def _test_stock():
 
 
 def callback(stock):
+    _gDayDict.clear()
     _code = stock.read_code()
     _name = stock.read_name()
     _type = stock.read_type()
@@ -100,11 +99,10 @@ def callback(stock):
         _dayCollectJsonFileName = day_collect_json_filename(stock)
         deal_day_to_dict(stock, _year)
         # print('未整理数据路径', _dayCollectJsonFileName, filetool.is_json_file_validate(_dayCollectJsonFileName))
+    dict_to_csv.dict_to_csv(stock, _gDayDict)
 
 
 def collect_days():
     print('collect days')
-    _gDayDict.clear()
-    # stockapp.read_stock_csv(callback)
-    _test_stock()
-    print(_gDayDict)
+    stockapp.read_stock_csv(callback)
+    # _test_stock()

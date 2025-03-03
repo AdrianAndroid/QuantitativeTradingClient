@@ -1,3 +1,11 @@
+DAY_HEADER_DATE = 'Date'
+DAY_HEADER_OPEN_PRICE = 'Open'
+DAY_HEADER_HIGH = 'High'
+DAY_HEADER_LOW = 'Low'
+DAY_HEADER_CLOSE = 'Close'
+DAY_HEADER_VOL = 'Vol'
+
+
 class Day:
     def __init__(self, date, open_price, high, low, close, vol):
         self.date = date
@@ -54,3 +62,25 @@ class Day:
     def __repr__(self):
         return (f"Day(date={self.date}, open_price={self.open_price}, "
                 f"high={self.high}, low={self.low}, close={self.close}, vol={self.vol})")
+
+
+def day_csv_header():
+    return [
+        DAY_HEADER_DATE,
+        DAY_HEADER_OPEN_PRICE,
+        DAY_HEADER_HIGH,
+        DAY_HEADER_LOW,
+        DAY_HEADER_CLOSE,
+        DAY_HEADER_VOL
+    ]
+
+
+def day_csv_row(day):
+    return [
+        day.get_date(),
+        day.get_open_price(),
+        day.get_high(),
+        day.get_low(),
+        day.get_close(),
+        day.get_vol()
+    ]
