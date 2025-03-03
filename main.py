@@ -1,8 +1,6 @@
-from webhook.webhook import send_webhook_message
-import const.const as const
-import sys
+import functions.tecent.days_collect as days_collect
 
-print(sys.path)
-
-send_webhook_message('hello')
-print(const.PI)
+if __name__ == "__main__":
+    print('开始运行')
+    days_collect.prints()
+    print('结束运行')
