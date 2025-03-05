@@ -8,7 +8,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 
 # callback(Stock)
-def read_stock_csv(callback, num_consumers=100, max_workers=200, queue_size=200):
+def read_stock_csv(callback, num_consumers=200, max_workers=300, queue_size=1000):
     """使用生产者消费者模式读取股票CSV文件
     Args:
         callback: 处理每个Stock对象的回调函数

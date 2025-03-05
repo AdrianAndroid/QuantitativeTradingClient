@@ -117,7 +117,7 @@ def callback(stock):
     _code = stock.read_code()
     _name = stock.read_name()
     _type = stock.read_type()
-    print(_code, _name, _type)
+    log.info(f'{_code}, {_name}, {_type}')
     tableName = f'{_type}{_code}'
     log.info(f'tableName={tableName}')
     msDbOperator = MsDbOperator(db_name=const.const.DB_DAY_COLLECT)

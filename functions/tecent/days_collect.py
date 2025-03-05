@@ -7,6 +7,7 @@ import functions.tecent.stocks as stockapp
 import jsons.jsontool as jsontool
 from functions.tecent.day import Day
 from functions.tecent.stock import Stock
+import log
 
 _gDayDict = {}
 
@@ -89,7 +90,7 @@ def callback(stock):
     _code = stock.read_code()
     _name = stock.read_name()
     _type = stock.read_type()
-    print(_code, _name, _type)
+    log.info(f'{_code}, {_name}, {_type}')
     historyFileName = history_un_collect.history_filename(stock)
     _year = datetime.date.today().year
     deal_day_to_dict(stock, _year)
