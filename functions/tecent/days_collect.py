@@ -106,3 +106,4 @@ def collect_days():
     print('collect days')
     stockapp.read_stock_csv(callback)
     # _test_stock()
+

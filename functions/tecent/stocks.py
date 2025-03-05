@@ -16,3 +16,11 @@ def read_stock_csv(callback):
         callback(Stock(_code, _name, _type))
         print(size)
         size -= 1
+
+
+class StockOperator:
+    def read_stock_csv(self):
+        pass
+
+    def write_stock_csv(self):
+        pass

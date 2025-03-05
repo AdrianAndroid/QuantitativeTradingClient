@@ -1,5 +1,3 @@
-PI = 3.14
-
 # 工作目录
 WORK_PATH = '/Users/zhaojian/code/trading'
 
@@ -10,3 +8,5 @@ TENCENT_DAYS_COLLECT = f'{WORK_PATH}/lday2csv/tencent/days_collect'
 TENCENT_HISTORY_YEAR_UN_COLLECT = f'{WORK_PATH}/lday2csv/tencent/history_year_un_collect'
 # 所有的公司股票
 TENCENT_STOCKS_FILE = f'{WORK_PATH}/lday2csv/tencent/stocks.csv'
+
+DB_DAY_COLLECT = 'days_collect'

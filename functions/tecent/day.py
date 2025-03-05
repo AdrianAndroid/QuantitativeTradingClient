@@ -63,6 +63,16 @@ class Day:
         return (f"Day(date={self.date}, open_price={self.open_price}, "
                 f"high={self.high}, low={self.low}, close={self.close}, vol={self.vol})")
 
+    def row_tuple(self):
+        return (
+            self.get_date(),
+            self.get_open_price(),
+            self.get_high(),
+            self.get_low(),
+            self.get_close(),
+            self.get_vol()
+        )
+
 
 def day_csv_header():
     return [
