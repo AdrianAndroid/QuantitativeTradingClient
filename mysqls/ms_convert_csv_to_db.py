@@ -150,8 +150,8 @@ def callback(stock):
             if not day.equalsBean(_queryDayDict[day.get_date()]):
                 _needUpdateDays.append(day)
                 raise Exception('数据不一致，请自查!')
-            else:
-                log.info(f"数据一致.{day}")
+            # else:
+            #     log.info(f"数据一致.{day}")
         else:
             _needInsertDays.append(day)
 
@@ -199,8 +199,8 @@ def _test_stock():
 
 
 def convert_csv_to_db():
-    msDbOperator = MsDbOperator(db_name=const.const.DB_DAY_COLLECT)
-    msDbOperator.create_db()
+    msDbOperator = MsDbOperator(db_name='')
+    msDbOperator.create_db(const.const.DB_DAY_COLLECT)
     # 创建数据
     stockapp.read_stock_csv(callback)
     # _test_stock()
