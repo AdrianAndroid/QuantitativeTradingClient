@@ -1,4 +1,9 @@
 import pprint
+import tools.threadtool as threadtool
+
+
+def _get_head_tag():
+    return f'[{threadtool.get_process_name()}][{threadtool.get_thread_name()}]'
 
 
 def d(msg):
@@ -23,11 +28,11 @@ class Colors:
 
 
 def debug(message):
-    print(f"{Colors.DEBUG}{message}{Colors.END}")
+    print(f"{_get_head_tag()}{Colors.DEBUG}{message}{Colors.END}")
 
 
 def info(message):
-    print(f"{Colors.INFO}{message}{Colors.END}")
+    print(f"{_get_head_tag()}{Colors.INFO}{message}{Colors.END}")
 
 
 breakNumber = 0
@@ -44,15 +49,15 @@ def process(msg='.'):
 
 
 def warning(message):
-    print(f"{Colors.WARNING}{message}{Colors.END}")
+    print(f"{_get_head_tag()}{Colors.WARNING}{message}{Colors.END}")
 
 
 def error(message):
-    print(f"{Colors.ERROR}{message}{Colors.END}")
+    print(f"{_get_head_tag()}{Colors.ERROR}{message}{Colors.END}")
 
 
 def critical(message):
-    print(f"{Colors.CRITICAL}{message}{Colors.END}")
+    print(f"{_get_head_tag()}{Colors.CRITICAL}{message}{Colors.END}")
 
 # 测试不同级别的日志输出
 # debug('This is a debug message')

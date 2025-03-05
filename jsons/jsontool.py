@@ -1,6 +1,6 @@
 import json
 
-import files.filetool as _filetool
+import tools.filetool as _filetool
 
 
 def is_json_file_validate(filepath):
