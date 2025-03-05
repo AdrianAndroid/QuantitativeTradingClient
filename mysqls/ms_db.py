@@ -90,9 +90,9 @@ class MsDbOperator:
             cursor = db.cursor()
             _fields = ",".join(fields)
             sql = f'CREATE TABLE IF NOT EXISTS {table}   ({_fields});'
-            log.info(f'create_table sql={sql}')
+            log.info(f'create_table {table} sql={sql}')
             cursor.execute(sql)
-            log.info(f'create_table success.')
+            log.info(f'create_table {table} success.')
             return True
         except mysql.connector.Error as err:
             log.error(f"操作数据库 {self.db_name} 时出错: {err}")
@@ -108,13 +108,14 @@ class MsDbOperator:
             keys = ",".join(listHeader)
             values = ",".join(['%s'] * len(listHeader))
             sql = f"INSERT INTO {table} ({keys}) VALUES ({values})"
-            log.info(f'insert_list_rows sql={sql}')
+            log.info(f'insert_list_rows {table} sql={sql}')
             _total = 0
             for _item in listItems:
                 _tuple = process(_item)
-                log.process()
+                # log.process()
                 cursor.execute(sql, _tuple)
                 _total += 1
+            print('')
             db.commit()  # 数据表内容有更新，必须使用到该语句
             log.info(f"{_total} 记录插入成功。")
             return True
@@ -139,7 +140,7 @@ class MsDbOperator:
             _total = 0
             for _item in listItems:
                 sql = f"UPDATE {table} SET {sets} WHERE {whereProcess(_item)}"
-                log.process()
+                # log.process()
                 _tuple = process(_item)
                 cursor.execute(sql, _tuple)
                 _total += 1
@@ -162,11 +163,12 @@ class MsDbOperator:
                 sql = f'SELECT * FROM {table} WHERE {_whereProcess}'
             else:
                 sql = f'SELECT * FROM {table}'
-            log.info(f'query_rows sql={sql}')
+            log.info(f'query_rows {table}')
             cursor.execute(sql)
             return cursor.fetchall()
         except mysql.connector.Error as err:
-            log.error(f"query_rows {self.db_name} 时出错: {err}")
+            log.error(f"query_rows {table} 时出错: {err}")
+            log.error(f"query_rows {table} 时出错: sql={sql}")
             return list()
         finally:
             self._close(db, cursor)

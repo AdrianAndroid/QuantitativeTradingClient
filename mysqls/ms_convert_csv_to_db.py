@@ -129,7 +129,11 @@ def callback(stock):
         'Close VARCHAR(255)',
         'Vol VARCHAR(255)'
     ]
-    msDbOperator.create_table(tableName, fields)
+    if not msDbOperator.create_table(tableName, fields):
+        err = f'create_table {tableName} 不成功'
+        log.error(f'create_table {tableName} 不成功')
+        raise Exception(err)
+        return
 
     # 读出csv数据
     stockTypeCode = f'{_type}{_code}'
@@ -138,7 +142,7 @@ def callback(stock):
     # update_or_insert_day(stockTypeCode, _listDays)
 
     _listDates = [f'\'{day.get_date()}\'' for day in _listDays]
-    _queryDays = msDbOperator.query_rows(tableName, lambda: f'{DAY_HEADER_DATE} in ({",".join(_listDates)})')
+    _queryDays = msDbOperator.query_rows(tableName, lambda: f'{DAY_HEADER_DATE} in ({",".join(_listDates)})' if len(_listDates) != 0 else '')
     _queryDayDict = {day[0]: Day(day[0], day[1], day[2], day[3], day[4], day[5]) for day in _queryDays}
     _keys = _queryDayDict.keys()
 
@@ -173,7 +177,6 @@ def callback(stock):
         raise Exception(_errMsg)
     else:
         log.error(f'{tableName} 所有数据唯一,数据正常')
-
 
     # msDbOperator.update_list_rows(
     #     tableName, _listDays, day_csv_header(),
