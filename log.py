@@ -30,6 +30,19 @@ def info(message):
     print(f"{Colors.INFO}{message}{Colors.END}")
 
 
+breakNumber = 0
+
+
+def process(msg='.'):
+    global breakNumber
+    if breakNumber > 100:
+        breakNumber = 0
+        print(f"{Colors.INFO}{msg}{Colors.END}")
+    else:
+        breakNumber += 1
+        print(f"{Colors.INFO}{msg}{Colors.END}", end='')
+
+
 def warning(message):
     print(f"{Colors.WARNING}{message}{Colors.END}")
 
@@ -40,7 +53,6 @@ def error(message):
 
 def critical(message):
     print(f"{Colors.CRITICAL}{message}{Colors.END}")
-
 
 # 测试不同级别的日志输出
 # debug('This is a debug message')

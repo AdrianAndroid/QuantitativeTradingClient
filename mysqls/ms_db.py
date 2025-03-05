@@ -9,6 +9,7 @@ _HOST = "192.168.122.10"
 _USER = "root"
 _PASSWORD = "123456"
 
+
 # ALTER USER 'zhaojian'@'192.168.122.3' IDENTIFIED WITH mysql_native_password BY '123456';
 # FLUSH PRIVILEGES;
 
@@ -23,6 +24,7 @@ class MsDbOperator:
         db.close()
 
     def init_db(self, retryTimes=5):
+        # time.sleep(0.1)
         try:
             if self.db_name:
                 mydb = mysql.connector.connect(
@@ -107,11 +109,14 @@ class MsDbOperator:
             values = ",".join(['%s'] * len(listHeader))
             sql = f"INSERT INTO {table} ({keys}) VALUES ({values})"
             log.info(f'insert_list_rows sql={sql}')
+            _total = 0
             for _item in listItems:
                 _tuple = process(_item)
+                log.process()
                 cursor.execute(sql, _tuple)
+                _total += 1
             db.commit()  # 数据表内容有更新，必须使用到该语句
-            log.info(f"{cursor.rowcount} 记录插入成功。")
+            log.info(f"{_total} 记录插入成功。")
             return True
         except mysql.connector.Error as err:
             log.error(f"插入List数据 {self.db_name} 时出错: {err}")
@@ -131,13 +136,15 @@ class MsDbOperator:
             for header in listHeader:
                 _listTemp.append(f'{header}=%s')
             sets = ','.join(_listTemp)
+            _total = 0
             for _item in listItems:
                 sql = f"UPDATE {table} SET {sets} WHERE {whereProcess(_item)}"
-                log.info(f'update_list_rows sql={sql}')
+                log.process()
                 _tuple = process(_item)
                 cursor.execute(sql, _tuple)
+                _total += 1
             db.commit()  # 数据表内容有更新，必须使用到该语句
-            log.info(f"记录修改成功。")
+            log.info(f"{_total} 记录修改成功。")
             return True
         except mysql.connector.Error as err:
             log.error(f"插入List数据 {self.db_name} 时出错: {err}")

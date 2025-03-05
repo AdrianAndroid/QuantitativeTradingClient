@@ -171,6 +171,9 @@ def callback(stock):
         _errMsg = f'完成插入的数据有重复的日期 {tableName}'
         log.error(_errMsg)
         raise Exception(_errMsg)
+    else:
+        log.error(f'{tableName} 所有数据唯一,数据正常')
+
 
     # msDbOperator.update_list_rows(
     #     tableName, _listDays, day_csv_header(),
