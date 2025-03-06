@@ -158,9 +158,12 @@ class MsDbOperator:
         try:
             db = self.init_db()
             cursor = db.cursor()
-            if whereProcess:
+            if whereProcess is not None or whereProcess:
                 _whereProcess = whereProcess()
-                sql = f'SELECT * FROM {table} WHERE {_whereProcess}'
+                if not _whereProcess:
+                    sql = f'SELECT * FROM {table}'
+                else:
+                    sql = f'SELECT * FROM {table} WHERE {_whereProcess}'
             else:
                 sql = f'SELECT * FROM {table}'
             log.info(f'query_rows {table}')

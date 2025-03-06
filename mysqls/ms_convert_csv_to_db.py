@@ -142,7 +142,7 @@ def callback(stock):
     # update_or_insert_day(stockTypeCode, _listDays)
 
     _listDates = [f'\'{day.get_date()}\'' for day in _listDays]
-    _queryDays = msDbOperator.query_rows(tableName, lambda: f'{DAY_HEADER_DATE} in ({",".join(_listDates)})' if len(_listDates) != 0 else '')
+    _queryDays = msDbOperator.query_rows(tableName, lambda: f'{DAY_HEADER_DATE} in ({",".join(_listDates)})' if len(_listDates) != 0 else None)
     _queryDayDict = {day[0]: Day(day[0], day[1], day[2], day[3], day[4], day[5]) for day in _queryDays}
     _keys = _queryDayDict.keys()
 
@@ -201,12 +201,22 @@ def callback(stock):
 
 
 def _test_stock():
-    callback(Stock('002230', '科大讯飞', 'sz'))
+    # callback(Stock('002230', '科大讯飞', 'sz'))sh603271
+    # callback(Stock('000789', '', 'sz'))
+    # callback(Stock('600529', '', 'sh'))
+    callback(Stock('603271', '', 'sh'))
+    # callback(Stock('301275', '', 'sz'))
+    # callback(Stock('301501', '', 'sz'))
+    # callback(Stock('301275', '', 'sz'))
+    # callback(Stock('301501', '', 'sz'))
+    # callback(Stock('301479', '', 'sz'))
+    # callback(Stock('301275', '', 'sz'))
+    # callback(Stock('000789', '', 'sz'))
 
 
 def convert_csv_to_db():
     msDbOperator = MsDbOperator(db_name='')
     msDbOperator.create_db(const.const.DB_DAY_COLLECT)
     # 创建数据
-    stockapp.read_stock_csv(callback)
-    # _test_stock()
+    # stockapp.read_stock_csv(callback)
+    _test_stock()
