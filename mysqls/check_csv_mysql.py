@@ -1,12 +1,12 @@
 import mysqls.ms_db as ms_db
 import mysqls.ms_op as ms_op
-import functions.tecent.stocks as stockapp
-from functions.tecent.day import Day, DAY_HEADER_DATE, DAY_HEADER_OPEN_PRICE, DAY_HEADER_LOW, DAY_HEADER_VOL, \
+import func.tecent.stocks as stockapp
+from func.tecent.day import Day, DAY_HEADER_DATE, DAY_HEADER_OPEN_PRICE, DAY_HEADER_LOW, DAY_HEADER_VOL, \
     DAY_HEADER_HIGH, DAY_HEADER_CLOSE, day_csv_header, day_csv_row
-from functions.tecent.stock import Stock
+from func.tecent.stock import Stock
 import const.const
 import log
-import functions.tecent.days_collect as days_collect
+import func.tecent.days_collect as days_collect
 import tools.filetool as filetool
 from mysqls.ms_db import MsDbOperator
 import csv

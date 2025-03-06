@@ -1,13 +1,21 @@
-import functions.tecent.days_collect as days_collect
+import func.tecent.days_collect as days_collect
 import mysqls.ms_op
 import mysqls.ms_convert_csv_to_db as ms_convert_csv_to_db
-from functions.tecent.stocks import StockProcessor
+from func.tecent.stocks import StockProcessor
 import mysqls.check_csv_mysql as check_csv_mysql
+from func.tecent.download_day import DownloadDayOnStock
+from func.tecent.download_day import DownloadDays
+from func.tecent.download_day import ConvertJsonToCsv
+from func.tecent.stock import Stock
 
 if __name__ == "__main__":
     print('开始运行')
     # days_collect.collect_days()
 
-    ms_convert_csv_to_db.convert_csv_to_db()
+    # ms_convert_csv_to_db.convert_csv_to_db()
     # check_csv_mysql.check_csv_to_db()
+    # DownloadDayOnStock().do_work(Stock(_code='002230', _name='科大讯飞', _type='sz'))
+    DownloadDays().startWork()
+    # ConvertJsonToCsv().startOneWork()
+    # ConvertJsonToCsv().startWork()
     print('结束运行')

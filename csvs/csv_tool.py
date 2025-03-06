@@ -2,7 +2,7 @@ import csv
 
 import const.const as const
 import tools.filetool as filetool
-import functions.tecent.day as day
+import func.tecent.day as day
 import log
 
 

@@ -1,12 +1,15 @@
 # 工作目录
-WORK_PATH = '/Users/zhaojian/code/trading'
+WORK_PATH = '/Users/zhaojian/code/trading/lday2csv'
 
 # 未整理的日数据
-TENCENT_DAYS_UN_COLLECT = f'{WORK_PATH}/lday2csv/tencent/days_un_collect'
+TENCENT_DAYS_UN_COLLECT = f'{WORK_PATH}/tencent/days_un_collect'
 # 整理好的日数据
-TENCENT_DAYS_COLLECT = f'{WORK_PATH}/lday2csv/tencent/days_collect'
-TENCENT_HISTORY_YEAR_UN_COLLECT = f'{WORK_PATH}/lday2csv/tencent/history_year_un_collect'
+TENCENT_DAYS_COLLECT = f'{WORK_PATH}/tencent/days_collect'
+TENCENT_HISTORY_YEAR_UN_COLLECT = f'{WORK_PATH}/tencent/history_year_un_collect'
 # 所有的公司股票
-TENCENT_STOCKS_FILE = f'{WORK_PATH}/lday2csv/tencent/stocks.csv'
+TENCENT_STOCKS_FILE = f'{WORK_PATH}/tencent/stocks.csv'
 
 DB_DAY_COLLECT = 'days_collect'
+
+UPDATE_DAY_COLLECT_DIR_JSON = 'update_days_collect/jsons'
+UPDATE_DAY_COLLECT_DIR_CSV = 'update_days_collect/csv'

@@ -3,7 +3,7 @@ import tools.threadtool as threadtool
 
 
 def _get_head_tag():
-    return f'[{threadtool.get_process_name()}][{threadtool.get_thread_name()}]'
+    return f'[{threadtool.get_thread_name()}]'
 
 
 def d(msg):

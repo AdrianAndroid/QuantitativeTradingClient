@@ -20,7 +20,7 @@ def is_json_file_validate(filepath):
 
 def is_json_validate(json_data):
     try:
-        return isinstance(json_data, (list, dict)) and len(json_data) == 0
+        return isinstance(json_data, (list, dict)) and len(json_data) != 0
     except json.JSONDecodeError:
         return False
 

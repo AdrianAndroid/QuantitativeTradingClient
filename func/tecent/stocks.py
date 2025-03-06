@@ -1,7 +1,7 @@
 import pandas as pd
 import log
 import const.const
-from functions.tecent.stock import Stock
+from func.tecent.stock import Stock
 from queue import Queue, Empty
 from threading import Event
 from concurrent.futures import ThreadPoolExecutor
@@ -29,7 +29,7 @@ def read_stock_csv(callback, num_consumers=200, max_workers=300, queue_size=1000
             _name = row[1]
             _type = row[2]
             processor.add_stock(Stock(_code, _name, _type))
-            print(f'read_stock_csv剩余个数: {size}')
+            log.info(f'read_stock_csv剩余个数: {size}')
             size -= 1
     finally:
         log.info(f'processor.stop()')

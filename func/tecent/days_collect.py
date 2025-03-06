@@ -2,11 +2,11 @@ import datetime
 
 import const.const as const
 import csvs.csv_tool as dict_to_csv
-import functions.tecent.history_un_collect as history_un_collect
-import functions.tecent.stocks as stockapp
-import jsons.jsontool as jsontool
-from functions.tecent.day import Day
-from functions.tecent.stock import Stock
+import func.tecent.history_un_collect as history_un_collect
+import func.tecent.stocks as stockapp
+import tools.jsontool as jsontool
+from func.tecent.day import Day
+from func.tecent.stock import Stock
 import log
 
 _gDayDict = {}

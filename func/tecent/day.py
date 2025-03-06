@@ -7,7 +7,7 @@ DAY_HEADER_VOL = 'Vol'
 
 
 class Day:
-    def __init__(self, date, open_price, high, low, close, vol):
+    def __init__(self, date='', open_price='', high='', low='', close='', vol=''):
         self.date = date
         self.open_price = open_price
         self.high = high
@@ -72,6 +72,26 @@ class Day:
             self.get_close(),
             self.get_vol()
         )
+
+    def self_day_csv_header(self):
+        return day_csv_header()
+
+    def self_day_csv_row(self):
+        return day_csv_row(self)
+
+    def self_kline_json_to_day(self, json_day_data):
+        _date = json_day_data[0]
+        _open_price = json_day_data[1]
+        _high = json_day_data[3]
+        _low = json_day_data[4]
+        _close = json_day_data[2]
+        _vol = json_day_data[5]
+        self.set_date(_date)
+        self.set_open_price(_open_price)
+        self.set_high(_high)
+        self.set_low(_low)
+        self.set_close(_close)
+        self.set_vol(_vol)
 
 
 def day_csv_header():
