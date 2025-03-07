@@ -5,7 +5,9 @@ import log
 
 
 def join_path(*paths):
-    return os.path.join(paths)
+    # 直接将参数展开传递给 os.path.join
+    _path = os.path.join(*paths)
+    return _path
 
 
 def is_file_exits(filepath):
@@ -14,6 +16,9 @@ def is_file_exits(filepath):
 
 def is_dic_validate(dict_data):
     return isinstance(dict_data, dict)
+
+# Day(date=2008-05-12, open_price=28.21, high=31.17, low=28.21, close=30.31, vol=182125.40)
+# Day(date=2008-05-12, open_price=28.21, high=31.17, low=28.21, close=30.31, vol=182125.4)
 
 
 # 创建一个全局锁对象用于保存JSON数据

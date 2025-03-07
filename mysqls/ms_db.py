@@ -21,7 +21,10 @@ class MsDbDayOperator:
 
     def query_day_rows_to_dict(self, table, whereProcess=None):
         _queryRows = self.msDbOperator.query_rows(table=table, whereProcess=whereProcess)
-        _queryDayDict = {day[0]: Day(day[0], day[1], day[2], day[3], day[4], day[5]) for day in _queryRows}
+        _queryDayDict = {}
+        for row in _queryRows:
+            _day = Day(row[0], row[1], row[2], row[3], row[4], row[5])
+            _queryDayDict[_day.get_date()] = _day
         return _queryDayDict
 
     def insert_day_rows(self, table, listDayRows: list):

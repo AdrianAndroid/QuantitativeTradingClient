@@ -24,7 +24,8 @@ class CheckDaysValid:
 
     def read_days_from_csv(self, stock):
         _typeCode = f'{stock.read_type()}{stock.read_code()}'
-        _csvDayOperator = CsvDayOperator(csvPath=filetool.join_path(self._local_dir, _typeCode, '.csv'))
+        csv_filename = f'{_typeCode}.csv'
+        _csvDayOperator = CsvDayOperator(csvPath=filetool.join_path(self._local_dir, csv_filename))
         _dictDay = _csvDayOperator.read_csv_days_to_dict()
         return _dictDay
 
