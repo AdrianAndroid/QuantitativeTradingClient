@@ -1,6 +1,8 @@
 import mysql.connector
 import log
 import time
+from func.tecent.day import Day
+from func.tecent.day import day_csv_header
 
 # _HOST = "180.76.52.226"
 # _USER = "root"
@@ -12,6 +14,23 @@ _PASSWORD = "123456"
 
 # ALTER USER 'zhaojian'@'192.168.122.3' IDENTIFIED WITH mysql_native_password BY '123456';
 # FLUSH PRIVILEGES;
+
+class MsDbDayOperator:
+    def __init__(self, db_name, table=''):
+        self.msDbOperator = MsDbOperator(db_name, table)
+
+    def query_day_rows_to_dict(self, table, whereProcess=None):
+        _queryRows = self.msDbOperator.query_rows(table=table, whereProcess=whereProcess)
+        _queryDayDict = {day[0]: Day(day[0], day[1], day[2], day[3], day[4], day[5]) for day in _queryRows}
+        return _queryDayDict
+
+    def insert_day_rows(self, table, listDayRows: list):
+        self.msDbOperator.insert_list_rows(
+            table,
+            listDayRows,
+            day_csv_header(),
+            lambda day: day.row_tuple()
+        )
 
 
 class MsDbOperator:
@@ -101,7 +120,7 @@ class MsDbOperator:
             self._close(db, cursor)
 
     # process = lambda x: tuple(x.x1, x.x2)
-    def insert_list_rows(self, table, listItems, listHeader, process):
+    def insert_list_rows(self, table, listItems, listHeader, processDayTuple):
         try:
             db = self.init_db()
             cursor = db.cursor()
@@ -111,7 +130,7 @@ class MsDbOperator:
             log.info(f'insert_list_rows {table} sql={sql}')
             _total = 0
             for _item in listItems:
-                _tuple = process(_item)
+                _tuple = processDayTuple(_item)
                 # log.process()
                 cursor.execute(sql, _tuple)
                 _total += 1

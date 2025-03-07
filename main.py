@@ -7,6 +7,7 @@ from func.tecent.download_day import DownloadDayOnStock
 from func.tecent.download_day import DownloadDays
 from func.tecent.download_day import ConvertJsonToCsv
 from func.tecent.stock import Stock
+from func.tecent.check_days_validate import CheckDaysValid
 
 if __name__ == "__main__":
     print('开始运行')
@@ -16,6 +17,7 @@ if __name__ == "__main__":
     # check_csv_mysql.check_csv_to_db()
     # DownloadDayOnStock().do_work(Stock(_code='002230', _name='科大讯飞', _type='sz'))
     # DownloadDays().startWorkMainThread()
-    ConvertJsonToCsv().startOneWork()
+    # ConvertJsonToCsv().startOneWork()
     # ConvertJsonToCsv().startWork()
+    CheckDaysValid().startWork()
     print('结束运行')

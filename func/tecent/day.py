@@ -79,6 +79,20 @@ class Day:
     def self_day_csv_row(self):
         return day_csv_row(self)
 
+    def self_day_csv_to_day(self, csv_row):
+        _date = csv_row[0]
+        _open_price = csv_row[1]
+        _high = csv_row[2]
+        _low = csv_row[3]
+        _close = csv_row[4]
+        _vol = csv_row[5]
+        self.date = _date
+        self.open_price = _open_price
+        self.high = _high
+        self.low = _low
+        self.close = _close
+        self.vol = _vol
+
     def self_kline_json_to_day(self, json_day_data):
         _date = json_day_data[0]
         _open_price = json_day_data[1]

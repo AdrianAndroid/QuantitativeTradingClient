@@ -1,3 +1,5 @@
+import tools.filetool as filetool
+
 # 工作目录
 WORK_PATH = '/Users/zhaojian/code/trading/lday2csv'
 

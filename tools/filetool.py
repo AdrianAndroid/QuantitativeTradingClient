@@ -4,6 +4,10 @@ from threading import Lock
 import log
 
 
+def join_path(*paths):
+    return os.path.join(paths)
+
+
 def is_file_exits(filepath):
     return os.path.exists(filepath) and os.path.isfile(filepath)
 
