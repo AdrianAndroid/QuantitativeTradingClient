@@ -107,6 +107,7 @@ class DownloadDays:
     """
     多线程下载json
     """
+
     def __init__(self):
         self.num_consumers = 1
         self.max_workers = 300
@@ -130,6 +131,9 @@ class DownloadDays:
             max_workers=self.max_workers,
             queue_size=self.queue_size
         )
+
+    def startWorkMainThread(self):
+        stockapp.read_stock_csv_no_thread(callback=self.callback)
 
     def startWork(self):
         self.read_stocks()
@@ -193,7 +197,8 @@ class ConvertJsonToCsv:
         _dayCsvOp.save_to_local(csvPath)
 
     def startOneWork(self):
-        self.callback(Stock('300984', '金沃股份', 'sz'))
+        # self.callback(Stock('300984', '金沃股份', 'sz'))
+        stockapp.read_stock_csv_no_thread(callback=self.callback)
 
     def startWork(self):
         """使用生产者消费者模式读取股票CSV文件
