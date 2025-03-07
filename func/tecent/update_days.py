@@ -33,6 +33,9 @@ class DbDayUpdater:
         _queryDayDict = self.db_operator.query_day_rows_to_dict(table=tableName)
 
         _csvPath = filetool.join_path(filetool.join_path(UPDATE_DAY_COLLECT_DIR_CSV, f'{tableName}.csv'))
+        if not filetool.is_file_exits(_csvPath):
+            log.error(f"csv文件不存在 : {_csvPath} ")
+            return
         _csvDayOp = CsvDayOperator(_csvPath)
         _csvDayDict = _csvDayOp.read_csv_days_to_dict()
 
@@ -66,11 +69,12 @@ class DbDayUpdater:
             )
 
     def callback(self, stock: Stock):
-        log.info(stock)
-        # self._uploadStockDays(stock)
+        self._uploadStockDays(stock)
 
     def startWork(self):
         # self.callback(Stock('002230', '科大讯飞', 'sz'))
         _csvStockStockOp = CsvStockOperator(TENCENT_STOCKS_FILE)
-        _csvStockStockOp.read_csv_stock_to_list()
-        _csvStockStockOp.iter_list_stock(lambda stock: self.callback(stock))
+        # _list = _csvStockStockOp.read_csv_stock_to_list()
+        # _csvStockStockOp.iter_list_stock(lambda stock: self.callback(stock))
+
+        _csvStockStockOp.read_csv_stock_to_list_callback(lambda stock: self.callback(stock))

@@ -25,8 +25,14 @@ class CsvStockOperator:
         self._listStock.clear()
         for index, row in df.iterrows():
             _rowToStock = self.csv_row_to_stock(row)
-            self._listStock.append(_rowToStock)
+            self._listStock.append(Stock())
         return self._listStock
+
+    def read_csv_stock_to_list_callback(self, stock_call_back):
+        df = pd.read_csv(self._csv_path_, dtype={0: str})
+        for index, row in df.iterrows():
+            _rowToStock = self.csv_row_to_stock(row)
+            stock_call_back(_rowToStock)
 
     def iter_list_stock(self, callback):
         """
