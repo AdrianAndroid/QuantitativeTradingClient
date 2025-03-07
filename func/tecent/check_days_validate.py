@@ -54,7 +54,7 @@ class CheckDaysValid:
         self.callback(Stock('002230', '科大讯飞', 'sz'))
 
     def startWork(self):
-        self.startOneWork()
-        # _csvStockOperator = CsvStockOperator(TENCENT_STOCKS_FILE)
-        # _csvStockOperator.read_csv_stock_to_list()
-        # _csvStockOperator.iter_list_stock(callback=lambda stock: self.callback(stock))
+        # self.startOneWork()
+        _csvStockOperator = CsvStockOperator(TENCENT_STOCKS_FILE)
+        _csvStockOperator.read_csv_stock_to_list()
+        _csvStockOperator.iter_list_stock(callback=lambda stock: self.callback(stock))

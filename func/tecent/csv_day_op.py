@@ -16,7 +16,7 @@ class CsvStockOperator:
             raise Exception(_err)
         self._listStock = []
 
-    def csv_row_to_stock(self, row, callbackstock):
+    def csv_row_to_stock(self, row):
         _code = row[0]
         _name = row[1]
         _type = row[2]
@@ -31,7 +31,10 @@ class CsvStockOperator:
         return self._listStock
 
     def iter_list_stock(self, callback):
+        count = len(self._listStock)
         for stock in self._listStock:
+            count -= 1
+            log.info(f'当前stock={stock} 剩余:{count}')
             callback(stock)
 
 
@@ -64,7 +67,10 @@ class CsvDayOperator:
 
     def read_csv_days_to_dict(self):
         self.dictDay.clear()
-        df = pd.read_csv(self._csv_path_, dtype={0: str})
+        df = pd.read_csv(
+            self._csv_path_,
+            dtype={0: str, 1: str, 2: str, 3: str, 4: str, 5: str}
+        )  # 将Vol列设为str类型以保留小数点后的0
         for index, row in df.iterrows():
             _day = self.csv_row_to_day(row)
             self.dictDay[f'{_day.get_date()}'] = _day
