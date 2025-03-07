@@ -1,13 +1,5 @@
-import func.tecent.days_collect as days_collect
-import mysqls.ms_op
-import mysqls.ms_convert_csv_to_db as ms_convert_csv_to_db
-from func.tecent.stocks import StockProcessor
-import mysqls.check_csv_mysql as check_csv_mysql
-from func.tecent.download_day import DownloadDayOnStock
-from func.tecent.download_day import DownloadDays
-from func.tecent.download_day import ConvertJsonToCsv
-from func.tecent.stock import Stock
 from func.tecent.check_days_validate import CheckDaysValid
+from func.tecent.update_days import DbDayUpdater
 
 if __name__ == "__main__":
     print('开始运行')
@@ -19,5 +11,6 @@ if __name__ == "__main__":
     # DownloadDays().startWorkMainThread()
     # ConvertJsonToCsv().startOneWork()
     # ConvertJsonToCsv().startWork()
-    CheckDaysValid().startWork()
+    # CheckDaysValid().startWork()
+    DbDayUpdater().startWork()
     print('结束运行')

@@ -1,8 +1,11 @@
 import mysql.connector
 import log
 import time
-from func.tecent.day import Day
-from func.tecent.day import day_csv_header
+from func.day import Day
+from func.day import day_csv_header
+from func.day import DAY_HEADER_DATE
+from const.const import DB_DAY_COLLECT
+from func.stock import Stock
 
 # _HOST = "180.76.52.226"
 # _USER = "root"
@@ -16,11 +19,30 @@ _PASSWORD = "123456"
 # FLUSH PRIVILEGES;
 
 class MsDbDayOperator:
-    def __init__(self, db_name, table=''):
-        self.msDbOperator = MsDbOperator(db_name, table)
+
+    def __init__(self, db_name=DB_DAY_COLLECT):
+        self.msDbOperator = MsDbOperator(db_name, table='')
+        self.msDbOperator.create_db(db_name=db_name)
+
+    def create_day_table(self, table):
+        fields = [
+            'Date VARCHAR(255) PRIMARY KEY',
+            'Open VARCHAR(255)',
+            'High VARCHAR(255)',
+            'Low VARCHAR(255)',
+            'Close VARCHAR(255)',
+            'Vol VARCHAR(255)'
+        ]
+        return self.msDbOperator.create_table(
+            table=table,
+            fields=fields
+        )
 
     def query_day_rows_to_dict(self, table, whereProcess=None):
-        _queryRows = self.msDbOperator.query_rows(table=table, whereProcess=whereProcess)
+        _queryRows = self.msDbOperator.query_rows(
+            table=table,
+            whereProcess=whereProcess
+        )
         _queryDayDict = {}
         for row in _queryRows:
             _day = Day(row[0], row[1], row[2], row[3], row[4], row[5])
@@ -33,6 +55,15 @@ class MsDbDayOperator:
             listDayRows,
             day_csv_header(),
             lambda day: day.row_tuple()
+        )
+
+    def update_day_list_rows(self, table, listDayRows: list):
+        return self.msDbOperator.update_list_rows(
+            table=table,
+            listItems=listDayRows,
+            listHeader=day_csv_header(),
+            whereProcess=lambda day: f'{DAY_HEADER_DATE}=\'{day.get_date()}\'',
+            processTuple=lambda day: day.row_tuple()
         )
 
 
@@ -151,7 +182,7 @@ class MsDbOperator:
     # listHeader = ['Date', 'xxxx']
     # whereProcess = lambda x: f'Date=x.get_date()'
     # process = lambda x : (x.x1, x.x2)
-    def update_list_rows(self, table, listItems, listHeader, whereProcess, process):
+    def update_list_rows(self, table, listItems, listHeader, whereProcess, processTuple):
         try:
             db = self.init_db()
             cursor = db.cursor()
@@ -163,7 +194,7 @@ class MsDbOperator:
             for _item in listItems:
                 sql = f"UPDATE {table} SET {sets} WHERE {whereProcess(_item)}"
                 # log.process()
-                _tuple = process(_item)
+                _tuple = processTuple(_item)
                 cursor.execute(sql, _tuple)
                 _total += 1
             db.commit()  # 数据表内容有更新，必须使用到该语句

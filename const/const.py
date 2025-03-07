@@ -13,5 +13,5 @@ TENCENT_STOCKS_FILE = f'{WORK_PATH}/tencent/stocks.csv'
 
 DB_DAY_COLLECT = 'days_collect'
 
-UPDATE_DAY_COLLECT_DIR_JSON = 'update_days_collect/jsons'
-UPDATE_DAY_COLLECT_DIR_CSV = 'update_days_collect/csv'
+UPDATE_DAY_COLLECT_DIR_JSON = filetool.join_path(WORK_PATH, 'update_days_collect', 'jsons')
+UPDATE_DAY_COLLECT_DIR_CSV = filetool.join_path(WORK_PATH, 'update_days_collect', 'csv')

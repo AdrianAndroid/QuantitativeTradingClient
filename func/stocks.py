@@ -1,7 +1,7 @@
 import pandas as pd
 import log
 import const.const
-from func.tecent.stock import Stock
+from func.stock import Stock
 from queue import Queue, Empty
 from threading import Event
 from concurrent.futures import ThreadPoolExecutor

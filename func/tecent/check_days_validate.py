@@ -2,13 +2,11 @@ from const.const import TENCENT_STOCKS_FILE
 from const.const import TENCENT_DAYS_COLLECT
 from const.const import DB_DAY_COLLECT
 from mysqls.ms_db import MsDbDayOperator
-import func.tecent.stocks as stocksapp
 from func.tecent.csv_day_op import CsvDayOperator
 from func.tecent.csv_day_op import CsvStockOperator
 import tools.filetool as filetool
 import log
-from func.tecent.stock import Stock
-from func.tecent.day import Day
+from func.stock import Stock
 
 
 class CheckDaysValid:

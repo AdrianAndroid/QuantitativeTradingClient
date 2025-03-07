@@ -2,18 +2,15 @@ import tools.urltools as urltools
 import tools.randomtool as randomtool
 import tools.filetool as filetool
 import tools.jsontool as jsontool
-from const.const import WORK_PATH
 from const.const import UPDATE_DAY_COLLECT_DIR_JSON
 from const.const import UPDATE_DAY_COLLECT_DIR_CSV
-from const.const import TENCENT_STOCKS_FILE
-from func.tecent.stock import Stock
 import log
 import json
-import func.tecent.stocks as stockapp
-from func.tecent.day import Day
-from func.tecent.stock import Stock
+import func.stocks as stockapp
+from func.day import Day
+from func.stock import Stock
 import csv
-from func.tecent.day import day_csv_header
+from func.day import day_csv_header
 
 
 class DownloadDayOnStock:
@@ -22,7 +19,7 @@ class DownloadDayOnStock:
 
     def __init__(self, is_delete_dir=True):
         self._is_delete_org_json = is_delete_dir
-        self._local_dir = f'{WORK_PATH}/{UPDATE_DAY_COLLECT_DIR_JSON}'
+        self._local_dir = f'{UPDATE_DAY_COLLECT_DIR_JSON}'
         self._start_date_str = ''
         self._end_date_str = ''
 
@@ -164,8 +161,8 @@ class ConvertJsonToCsv:
         self.max_workers = 300
         self.queue_size = 1000
         self._is_delete_org_csv = is_delete_dir
-        self._local_json_dir = f'{WORK_PATH}/{UPDATE_DAY_COLLECT_DIR_JSON}'
-        self._local_csv_dir = f'{WORK_PATH}/{UPDATE_DAY_COLLECT_DIR_CSV}'
+        self._local_json_dir = f'{UPDATE_DAY_COLLECT_DIR_JSON}'
+        self._local_csv_dir = f'{UPDATE_DAY_COLLECT_DIR_CSV}'
 
     def callback(self, stock: Stock):
         if not filetool.create_folder_if_not_exists(self._local_csv_dir):

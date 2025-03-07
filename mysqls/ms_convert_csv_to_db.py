@@ -1,13 +1,7 @@
-import mysqls.ms_db as ms_db
-import mysqls.ms_op as ms_op
-import func.tecent.stocks as stockapp
-from func.tecent.day import Day, DAY_HEADER_DATE, DAY_HEADER_OPEN_PRICE, DAY_HEADER_LOW, DAY_HEADER_VOL, \
-    DAY_HEADER_HIGH, DAY_HEADER_CLOSE, day_csv_header, day_csv_row
-from func.tecent.stock import Stock
+from func.day import Day, DAY_HEADER_DATE, day_csv_header
+from func.stock import Stock
 import const.const
 import log
-import func.tecent.days_collect as days_collect
-import tools.filetool as filetool
 from mysqls.ms_db import MsDbOperator
 import csv
 
@@ -163,7 +157,7 @@ def callback(stock):
         msDbOperator.update_list_rows(
             tableName, _needUpdateDays, day_csv_header(),
             whereProcess=lambda day: f'{DAY_HEADER_DATE}=\'{day.get_date()}\'',
-            process=lambda day: day.row_tuple()
+            processTuple=lambda day: day.row_tuple()
         )
     if len(_needInsertDays) > 0:
         msDbOperator.insert_list_rows(

@@ -27,3 +27,6 @@ class Stock:
 
     def read_type(self):
         return self._dict['_type']
+
+    def __repr__(self):
+        return f'{self._dict}'

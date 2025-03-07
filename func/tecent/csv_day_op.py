@@ -1,10 +1,8 @@
 import tools.filetool as filetool
 import log
-import csv
-from func.tecent.day import Day
-from func.tecent.day import day_csv_header
+from func.day import Day
 import pandas as pd
-from func.tecent.stock import Stock
+from func.stock import Stock
 
 
 class CsvStockOperator:
@@ -31,6 +29,11 @@ class CsvStockOperator:
         return self._listStock
 
     def iter_list_stock(self, callback):
+        """
+        调用此方法时，必须先调用{self.read_csv_stock_to_list()}
+        :param callback:
+        :return:
+        """
         count = len(self._listStock)
         for stock in self._listStock:
             count -= 1
