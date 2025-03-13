@@ -7,6 +7,7 @@
 
 from func.stock import Stock
 from tools.urltools import read_url
+from tools.urltools import download_pdf
 from tools.timetool import timestamp13
 import tools.filetool as filetool
 import tools.jsontool as jsontool
@@ -27,16 +28,28 @@ class ReportListItem:
     # "Ftranslate": "0",
     # "noticeTypeDesc": "一季度报告正文"
     def __init__(self, itemDict):
-        _id = itemDict['id']  # "id": "nos1209729000",
-        _symbol = itemDict['symbol']  # "symbol": "sz002230",
-        _title = itemDict['title']  # "title": "科大讯飞：2021年第一季度报告全文",
-        _time = itemDict['time']  # "time": "2021-04-19 21:34:35",
-        _type = itemDict['type']  # "type": "0",
-        _url = itemDict['url']  # "url": "",
-        _newstype = itemDict['newstype']  # "newstype": "01010503,010112,01030501",
-        _update_time = itemDict['update_time']  # "update_time": "2021-04-19 21:34:35",
-        _Ftranslate = itemDict['Ftranslate']  # "Ftranslate": "0",
-        _noticeTypeDesc = itemDict['noticeTypeDesc']  # "noticeTypeDesc": "一季度报告正文"
+        self._id = itemDict['id']  # "id": "nos1209729000",
+        self._symbol = itemDict['symbol']  # "symbol": "sz002230",
+        self._title = itemDict['title']  # "title": "科大讯飞：2021年第一季度报告全文",
+        self._time = itemDict['time']  # "time": "2021-04-19 21:34:35",
+        self._type = itemDict['type']  # "type": "0",
+        self._url = itemDict['url']  # "url": "",
+        self._newstype = itemDict['newstype']  # "newstype": "01010503,010112,01030501",
+        self._update_time = itemDict['update_time']  # "update_time": "2021-04-19 21:34:35",
+        self._Ftranslate = itemDict['Ftranslate']  # "Ftranslate": "0",
+        self._noticeTypeDesc = itemDict['noticeTypeDesc']  # "noticeTypeDesc": "一季度报告正文"
+
+    def __repr__(self):
+        return (f"ReportListItem(id='{self._id}', "
+                f"symbol='{self._symbol}', "
+                f"title='{self._title}', "
+                f"time='{self._time}', "
+                f"type='{self._type}', "
+                f"noticeTypeDesc='{self._noticeTypeDesc}')")
+
+    @property
+    def id(self):
+        return self._id
 
 
 class ReportList:
@@ -56,6 +69,11 @@ class ReportList:
     def get_report_list(self):
         return self._reportList
 
+    def __repr__(self):
+        return (f"ReportList(total_num={self._total_num}, "
+                f"total_page={self.total_page}, "
+                f"reports_count={len(self._reportList)}, "
+                f"reports={self._reportList})")
 
 
 class DownloadNoticeList:
@@ -82,10 +100,51 @@ class DownloadNoticeList:
         return _reportList.get_report_list()
 
 
+class DownloadNosItem:
+    def __init__(self, itemDict):
+        self._id = itemDict['id']  # "id": "1221432679",
+        self._time = itemDict['time']  # "time": "2024-10-18 18:44:10",
+        self._type = itemDict['type']  # "type": 0,
+        self._title = itemDict['title']  # "title": "科大讯飞：2024年三季度报告",
+        self._url = itemDict['url']  # "url": "http://stockhtm.finance.qq.com/sstock/quot",
+        self._pdf = itemDict['pdf']  # "pdf": "http://file.finance.qq.com/finance/hs/pdf/2024/10/19/1221432679.PDF"
+
+    def __repr__(self):
+        return (f"DownloadNosItem(id='{self._id}', "
+                f"time='{self._time}', "
+                f"type='{self._type}', "
+                f"title='{self._title}', "
+                f"pdf='{self._pdf}')")
+
+
+class DownloadNosReport:
+
+    def __init__(self):
+        self.nosItem = None
+
+    def download_nos(self, report_item: ReportListItem):
+        _nosId = report_item.id
+        url = f'https://proxy.finance.qq.com/ifzqgtimg/appstock/news/content/content?_var=notice_detail&id={_nosId}&_={timestamp13()}'
+        log.info(url)
+        _decode_data = read_url(url)
+
+        str_json_data = _decode_data.split('=', 1)[1]
+        json_data = json.loads(str_json_data)
+        if not jsontool.is_json_validate(json_data):
+            log.error(f'非法的json数据. url={url}, json:{json_data}')
+            return
+        # log.info(json_data)
+        if 'data' in json_data:
+            _data = json_data['data']
+            if len(_data) > 0:
+                self.nosItem = DownloadNosItem(_data[0])
+        log.info(self.nosItem)
+
 class DownloadReports:
 
     def startDownload(self):
-        _stock = Stock(_code='002230', _name='科大讯飞', _type='sz')
+        # _stock = Stock(_code='002230', _name='科大讯飞', _type='sz')
+        _stock = Stock(_code='002594', _name='比亚迪', _type='sz')
 
         # 下载年报的工作目录
         _code = _stock.read_code()
@@ -98,4 +157,14 @@ class DownloadReports:
         # 获取第一页的年报列表
         _download_notice_list = DownloadNoticeList(_stock)
         _report_list = _download_notice_list.read_notice_list()
-        log.info(_report_list)
+
+        _download_nos_report = DownloadNosReport()
+        for _item in _report_list:
+            log.info(_item)
+            _download_nos_report.download_nos(_item)
+            _nosItem = _download_nos_report.nosItem
+            _title = _nosItem._title
+            _pdfUrl = _nosItem._pdf
+            _filepath = filetool.join_path(_report_dir, f'{_title}.pdf')
+            if not filetool.is_file_exits(_filepath):
+                download_pdf(_pdfUrl, _filepath)

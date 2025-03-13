@@ -3,6 +3,7 @@ import time
 from urllib import request
 from urllib.error import URLError, HTTPError
 import log
+import requests
 
 
 def read_url(url, _time=3):
@@ -19,6 +20,27 @@ def read_url(url, _time=3):
     except Exception as e:
         return _read_url_retry(url, _time, f"出现错误:{e}, URL:{url}")
     return decode_data
+
+
+def download_pdf(url, save_path):
+    try:
+        # 发送 HTTP 请求获取 PDF 文件内容
+        response = requests.get(url, stream=True)
+        # 检查响应状态码，200 表示请求成功
+        response.raise_for_status()
+
+        # 以二进制写入模式打开文件
+        with open(save_path, 'wb') as file:
+            # 遍历响应内容的每个数据块
+            for chunk in response.iter_content(chunk_size=8192):
+                if chunk:
+                    # 将数据块写入文件
+                    file.write(chunk)
+        print(f"PDF 文件下载成功，保存路径为: {save_path}")
+    except requests.exceptions.RequestException as e:
+        print(f"请求出错: {e}")
+    except Exception as e:
+        print(f"下载过程中出现错误: {e}")
 
 
 def _read_url_retry(url, _time, msg):
