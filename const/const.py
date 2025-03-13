@@ -15,3 +15,5 @@ DB_DAY_COLLECT = 'days_collect'
 
 UPDATE_DAY_COLLECT_DIR_JSON = filetool.join_path(WORK_PATH, 'update_days_collect', 'jsons')
 UPDATE_DAY_COLLECT_DIR_CSV = filetool.join_path(WORK_PATH, 'update_days_collect', 'csv')
+
+DOWNLOAD_REPORT_PATH = '/Users/zhaojian/Downloads'

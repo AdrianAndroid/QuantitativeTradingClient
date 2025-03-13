@@ -1,5 +1,6 @@
 from func.tecent.check_days_validate import CheckDaysValid
 from func.tecent.update_days import DbDayUpdater
+from func.tecent.download_report import DownloadReports
 
 if __name__ == "__main__":
     print('开始运行')
@@ -12,5 +13,6 @@ if __name__ == "__main__":
     # ConvertJsonToCsv().startOneWork()
     # ConvertJsonToCsv().startWork()
     # CheckDaysValid().startWork()
-    DbDayUpdater().startWork()
+    # DbDayUpdater().startWork()
+    DownloadReports().startDownload()
     print('结束运行')
