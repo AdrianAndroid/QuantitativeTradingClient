@@ -140,11 +140,15 @@ class DownloadNosReport:
                 self.nosItem = DownloadNosItem(_data[0])
         log.info(self.nosItem)
 
+
 class DownloadReports:
 
     def startDownload(self):
         # _stock = Stock(_code='002230', _name='科大讯飞', _type='sz')
-        _stock = Stock(_code='002594', _name='比亚迪', _type='sz')
+        # _stock = Stock(_code='002594', _name='比亚迪', _type='sz')
+        # _stock = Stock(_code='600126', _name='杭钢股份', _type='sh')
+        # _stock = Stock(_code='600580', _name='卧龙电驱', _type='sh')
+        _stock = Stock(_code='603881', _name='数据港', _type='sh')
 
         # 下载年报的工作目录
         _code = _stock.read_code()
