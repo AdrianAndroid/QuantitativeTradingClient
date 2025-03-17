@@ -148,7 +148,11 @@ class DownloadReports:
         # _stock = Stock(_code='002594', _name='比亚迪', _type='sz')
         # _stock = Stock(_code='600126', _name='杭钢股份', _type='sh')
         # _stock = Stock(_code='600580', _name='卧龙电驱', _type='sh')
-        _stock = Stock(_code='603881', _name='数据港', _type='sh')
+        # _stock = Stock(_code='603881', _name='数据港', _type='sh')
+        # _stock = Stock(_code='002102', _name='能特科技', _type='sz')
+        # _stock = Stock(_code='002570', _name='贝因美', _type='sz')
+        # _stock = Stock(_code='300611', _name='美力科技', _type='sz')
+        _stock = Stock(_code='600186', _name='莲花控股', _type='sh')
 
         # 下载年报的工作目录
         _code = _stock.read_code()
@@ -165,10 +169,16 @@ class DownloadReports:
         _download_nos_report = DownloadNosReport()
         for _item in _report_list:
             log.info(_item)
-            _download_nos_report.download_nos(_item)
-            _nosItem = _download_nos_report.nosItem
-            _title = _nosItem._title
-            _pdfUrl = _nosItem._pdf
+            _title = _item._title
             _filepath = filetool.join_path(_report_dir, f'{_title}.pdf')
+
             if not filetool.is_file_exits(_filepath):
+                log.info(f'文件不存在 filepath={_filepath}')
+                _download_nos_report.download_nos(_item)
+                _nosItem = _download_nos_report.nosItem
+                _pdfUrl = _nosItem._pdf
                 download_pdf(_pdfUrl, _filepath)
+            else:
+                log.info(f'文件已经存在存在 filepath={_filepath}')
+
+
