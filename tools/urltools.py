@@ -4,6 +4,11 @@ from urllib import request
 from urllib.error import URLError, HTTPError
 import log
 import requests
+import validators
+
+
+def is_url(url):
+    return validators.url(url)
 
 
 def read_url(url, _time=3):

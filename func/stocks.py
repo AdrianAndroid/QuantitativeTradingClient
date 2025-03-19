@@ -5,6 +5,7 @@ from func.stock import Stock
 from queue import Queue, Empty
 from threading import Event
 from concurrent.futures import ThreadPoolExecutor
+import copy
 
 
 # callback(Stock)
@@ -44,9 +45,43 @@ def read_stock_csv_no_thread(callback):
         _code = row[0]
         _name = row[1]
         _type = row[2]
-        callback(Stock(_code, _name, _type))
-        log.info(f'read_stock_csv剩余个数: {size}')
+        stock = Stock(_code, _name, _type)
+        callback(stock)
+        log.info(f'read_stock_csv剩余个数: {size}， id={id(stock)}')
         size -= 1
+
+
+# def read_stock_csv_no_thread(callback):
+#     filepath = const.const.TENCENT_STOCKS_FILE
+#     df = pd.read_csv(filepath, dtype={0: str})
+#     size = len(df)
+#     previous_id = None
+#     for index, row in df.iterrows():
+#         _code = row[0]
+#         _name = row[1]
+#         _type = row[2]
+#         stock = Stock(_code, _name, _type)
+#         current_id = id(stock)
+#
+#         # 打印当前对象和前一个对象的id，证明每次都是新对象
+#         log.info(f'Previous Stock id: {previous_id}, Current Stock id: {current_id}')
+#         if previous_id == current_id:
+#             log.warning("警告：检测到重用了相同的对象！")
+#
+#         callback(stock)
+#         previous_id = current_id
+#         log.info(f'read_stock_csv剩余个数: {size}')
+#         size -= 1
+
+def read_stock_csv_no_thread_to_dict_by_name_key():
+    dictStocks = {}
+    read_stock_csv_no_thread(lambda stock: dictStocks.update({stock.read_name(): Stock(
+        _code=copy.deepcopy(stock.read_code()), _name=copy.deepcopy(stock.read_name()),
+        _type=copy.deepcopy(stock.read_type())
+    )}))
+    # read_stock_csv_no_thread(lambda stock: log.info(id(stock)))
+    # read_stock_csv_no_thread(lambda stock: '')
+    return dictStocks
 
 
 class StockProcessor:

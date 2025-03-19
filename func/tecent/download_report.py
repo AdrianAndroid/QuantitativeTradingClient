@@ -8,12 +8,14 @@
 from func.stock import Stock
 from tools.urltools import read_url
 from tools.urltools import download_pdf
+from tools.urltools import is_url
 from tools.timetool import timestamp13
 import tools.filetool as filetool
 import tools.jsontool as jsontool
 import const.const as const
 import json
 import log
+from func.stocks import read_stock_csv_no_thread_to_dict_by_name_key
 
 
 class ReportListItem:
@@ -102,12 +104,18 @@ class DownloadNoticeList:
 
 class DownloadNosItem:
     def __init__(self, itemDict):
-        self._id = itemDict['id']  # "id": "1221432679",
-        self._time = itemDict['time']  # "time": "2024-10-18 18:44:10",
-        self._type = itemDict['type']  # "type": 0,
-        self._title = itemDict['title']  # "title": "科大讯飞：2024年三季度报告",
-        self._url = itemDict['url']  # "url": "http://stockhtm.finance.qq.com/sstock/quot",
-        self._pdf = itemDict['pdf']  # "pdf": "http://file.finance.qq.com/finance/hs/pdf/2024/10/19/1221432679.PDF"
+        self._id = self.dictRead(itemDict, 'id')  # "id": "1221432679",
+        self._time = self.dictRead(itemDict, 'time')  # "time": "2024-10-18 18:44:10",
+        self._type = self.dictRead(itemDict, 'type')  # "type": 0,
+        self._title = self.dictRead(itemDict, 'title')  # "title": "科大讯飞：2024年三季度报告",
+        self._url = self.dictRead(itemDict, 'url')  # "url": "http://stockhtm.finance.qq.com/sstock/quot",
+        self._pdf = self.dictRead(itemDict, 'pdf')  # "pdf": "http://file.finance.qq.com/finance/hs/pdf/2024/10/19/1221432679.PDF"
+
+    def dictRead(self, _dict, _key):
+        if _key in _dict:
+            return _dict[_key]
+        else:
+            return ''
 
     def __repr__(self):
         return (f"DownloadNosItem(id='{self._id}', "
@@ -143,27 +151,17 @@ class DownloadNosReport:
 
 class DownloadReports:
 
-    def startDownload(self):
-        # _stock = Stock(_code='002230', _name='科大讯飞', _type='sz')
-        # _stock = Stock(_code='002594', _name='比亚迪', _type='sz')
-        # _stock = Stock(_code='600126', _name='杭钢股份', _type='sh')
-        # _stock = Stock(_code='600580', _name='卧龙电驱', _type='sh')
-        # _stock = Stock(_code='603881', _name='数据港', _type='sh')
-        # _stock = Stock(_code='002102', _name='能特科技', _type='sz')
-        # _stock = Stock(_code='002570', _name='贝因美', _type='sz')
-        # _stock = Stock(_code='300611', _name='美力科技', _type='sz')
-        _stock = Stock(_code='600186', _name='莲花控股', _type='sh')
-
+    def _download(self, stock):
         # 下载年报的工作目录
-        _code = _stock.read_code()
-        _type = _stock.read_type()
-        _name = _stock.read_name()
+        _code = stock.read_code()
+        _type = stock.read_type()
+        _name = stock.read_name()
         _work_dir_name = f'{_type}{_code}{_name}'
         _report_dir = filetool.join_path(const.DOWNLOAD_REPORT_PATH, _work_dir_name)
         filetool.create_folder_if_not_exists(_report_dir)
 
         # 获取第一页的年报列表
-        _download_notice_list = DownloadNoticeList(_stock)
+        _download_notice_list = DownloadNoticeList(stock)
         _report_list = _download_notice_list.read_notice_list()
 
         _download_nos_report = DownloadNosReport()
@@ -177,8 +175,52 @@ class DownloadReports:
                 _download_nos_report.download_nos(_item)
                 _nosItem = _download_nos_report.nosItem
                 _pdfUrl = _nosItem._pdf
-                download_pdf(_pdfUrl, _filepath)
+                if is_url(_pdfUrl):
+                    download_pdf(_pdfUrl, _filepath)
             else:
                 log.info(f'文件已经存在存在 filepath={_filepath}')
 
+    def startDownload(self):
+        # _stock = Stock(_code='002230', _name='科大讯飞', _type='sz')
+        # _stock = Stock(_code='002594', _name='比亚迪', _type='sz')
+        # _stock = Stock(_code='600126', _name='杭钢股份', _type='sh')
+        # _stock = Stock(_code='600580', _name='卧龙电驱', _type='sh')
+        # _stock = Stock(_code='603881', _name='数据港', _type='sh')
+        # _stock = Stock(_code='002102', _name='能特科技', _type='sz')
+        # _stock = Stock(_code='002570', _name='贝因美', _type='sz')
+        # _stock = Stock(_code='300611', _name='美力科技', _type='sz')
+        # _stock = Stock(_code='600186', _name='莲花控股', _type='sh')
+        # _stock = Stock(_code='600143', _name='金发科技', _type='sh')
+        _list_stocks = [
+            # '华夏银行',
+            # '廊坊发展',
+            # '陕建股份',
+            # '海正药业',
+            # '华阳股份',
+            # '北京银行',
+            # '中国铁建',
+            # '中国中铁',
+            # '长沙银行',
+            # '中国建筑',
+            # '潞安环能',
+            # '贵阳银行',
+            # '惠达卫浴',
+            # '禾丰股份',
+            # '天健集团',
+            # '山东路桥',
+            # '顺鑫农业',
+            # '冀中能源',
+            # '河化股份',
+            # '天康生物',
+            # '唐人神',
+            # '克明食品',
+            # '牧原股份',
+            # '高盟新材',
+            # '温氏股份',
+            # '立华股份'
+        ]
+        stockDict = read_stock_csv_no_thread_to_dict_by_name_key()
 
+        for stockName in _list_stocks:
+            log.info(stockDict[stockName])
+            self._download(stockDict[stockName])
