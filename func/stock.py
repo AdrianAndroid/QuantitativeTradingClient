@@ -34,6 +34,9 @@ class Stock:
     def read_type_code_name(self):
         return f'{self.read_type()}{self.read_code()}{self.read_name()}'
 
+    def contains_S_or_T(self):
+        return not self._name or 'S' in self._name or 'T' in self._name
+
     def __eq__(self, other):
         if not isinstance(other, Stock):
             return False
